@@ -143,3 +143,85 @@ Humanoid.prototype.greet = function() {
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  //CONSTRUCTOR FUNCTIONS FOR STRETCH PROBLEMS
+  function Villain(vobj) {
+    Humanoid.call(this, vobj);
+    this.thunderBolt = vobj.thunderBolt;
+  }
+
+  function Hero(hobj) {
+    Humanoid.call(this, hobj);
+    this.ironFist = hobj.ironFist;
+    this.finishingMove = hobj.finishingMove;
+  }
+
+  //VILLAIN AND HERO OBJECTS FOR STRETCH PROBLEMS
+  //Villain
+  const villain = new Villain({
+    thunderBolt: function(obj) {
+      obj.healthPoints = obj.healthPoints -2;
+      if(obj.healthPoints < 1) {
+        console.log(`${obj.name} has been completely destroyed`);
+      }
+    },
+    createdAt: new Date(),
+    dimensions: {
+      length: 5,
+      width: 3,
+      height: 4,
+    },
+    healthPoints: 40,
+    name: 'Thanos',
+    team: 'One Man Army',
+    weapons: 'Infinity Stones',
+    language: 'Titan',
+  })
+
+  //Hero
+  const hero = new Hero({
+    ironFist: function(obj) {
+      obj.healthPoints = obj.healthPoints -1;
+    },
+    finishingMove: function(obj) {
+      obj.healthPoints = 0;
+      console.log(`You have won the game, and  completely destroyed the villain. Somebody call an ambulance!`)
+    },
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 1,
+    },
+    healthPoints: 5,
+    name: 'Iron Man',
+    team: 'Avengers',
+    weapons: 'Nano-tech Suit',
+    language: 'English',
+  })
+
+  //WAR ZONE
+  //hero beating up archer
+  hero.ironFist(swordsman);
+  console.log(swordsman.healthPoints);
+  hero.ironFist(swordsman);
+  console.log(swordsman.healthPoints);
+  console.log(swordsman);
+
+
+  //villain beating up swordman
+  villain.thunderBolt(archer);
+  console.log(archer.healthPoints); // 8
+  villain.thunderBolt(archer);
+  console.log(archer.healthPoints); // 6
+  villain.thunderBolt(archer);
+  console.log(archer.healthPoints); // 4
+  villain.thunderBolt(archer);
+  console.log(archer.healthPoints); // 2
+  villain.thunderBolt(archer); 
+  console.log(archer)// 0
+
+  
+  //hero using his finishing move on villain
+  hero.finishingMove(villain);
+  console.log(villain);
