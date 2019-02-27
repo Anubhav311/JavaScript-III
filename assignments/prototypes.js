@@ -3,7 +3,7 @@
 
   In this file you will be creating three constructor functions: GameObject, CharacterStats, Humanoid.  
 
-  At the bottom of this file are 3 objects that all end up inheriting from Humanoid.  Use the objects at the bottom of the page to test your constructor functions.
+  At the bottom of this file are 3 objects that all end up inheriting from Humanoid. Use the objects at the bottom of the page to test your constructor functions.
   
   Each constructor function has unique properties and methods that are defined in their block comments below:
 */
@@ -40,8 +40,43 @@
 */
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
+//GAMEOBJECT CONSTRUCTOR'S TERRITORY
+function GameObject(gobj) {
+  this.createdAt = gobj.createdAt;
+  this.name = gobj.name;
+  this.dimensions = gobj.dimensions;
+}
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`;
+}
 
-/*
+//CHARACTERSTATS CONSTRUCTOR'S TERRITORY
+function CharacterStats(cobj) {
+  this.healthPoints = cobj.healthPoints;
+  GameObject.call(this, cobj);
+}
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`;
+}
+
+//HUMANOID CONSTRUCTOR'S TERRITORY
+function Humanoid(hobj) {
+  this.team = hobj.team;
+  this.weapons = hobj.weapons;
+  this.language = hobj.language;
+  CharacterStats.call(this, hobj);
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}.`
+}
+
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,7 +137,7 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
