@@ -3,7 +3,7 @@
 
   In this file you will be creating three constructor functions: GameObject, CharacterStats, Humanoid.  
 
-  At the bottom of this file are 3 objects that all end up inheriting from Humanoid.  Use the objects at the bottom of the page to test your constructor functions.
+  At the bottom of this file are 3 objects that all end up inheriting from Humanoid. Use the objects at the bottom of the page to test your constructor functions.
   
   Each constructor function has unique properties and methods that are defined in their block comments below:
 */
@@ -40,8 +40,43 @@
 */
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
+//GAMEOBJECT CONSTRUCTOR'S TERRITORY
+function GameObject(gobj) {
+  this.createdAt = gobj.createdAt;
+  this.name = gobj.name;
+  this.dimensions = gobj.dimensions;
+}
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`;
+}
 
-/*
+//CHARACTERSTATS CONSTRUCTOR'S TERRITORY
+function CharacterStats(cobj) {
+  this.healthPoints = cobj.healthPoints;
+  GameObject.call(this, cobj);
+}
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`;
+}
+
+//HUMANOID CONSTRUCTOR'S TERRITORY
+function Humanoid(hobj) {
+  this.team = hobj.team;
+  this.weapons = hobj.weapons;
+  this.language = hobj.language;
+  CharacterStats.call(this, hobj);
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}.`
+}
+
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,9 +137,91 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  //CONSTRUCTOR FUNCTIONS FOR STRETCH PROBLEMS
+  function Villain(vobj) {
+    Humanoid.call(this, vobj);
+    this.thunderBolt = vobj.thunderBolt;
+  }
+
+  function Hero(hobj) {
+    Humanoid.call(this, hobj);
+    this.ironFist = hobj.ironFist;
+    this.finishingMove = hobj.finishingMove;
+  }
+
+  //VILLAIN AND HERO OBJECTS FOR STRETCH PROBLEMS
+  //Villain
+  const villain = new Villain({
+    thunderBolt: function(obj) {
+      obj.healthPoints = obj.healthPoints -2;
+      if(obj.healthPoints < 1) {
+        console.log(`${obj.name} has been completely destroyed`);
+      }
+    },
+    createdAt: new Date(),
+    dimensions: {
+      length: 5,
+      width: 3,
+      height: 4,
+    },
+    healthPoints: 40,
+    name: 'Thanos',
+    team: 'One Man Army',
+    weapons: 'Infinity Stones',
+    language: 'Titan',
+  })
+
+  //Hero
+  const hero = new Hero({
+    ironFist: function(obj) {
+      obj.healthPoints = obj.healthPoints -1;
+    },
+    finishingMove: function(obj) {
+      obj.healthPoints = 0;
+      console.log(`You have won the game, and  completely destroyed the villain. Somebody call an ambulance!`)
+    },
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 1,
+    },
+    healthPoints: 5,
+    name: 'Iron Man',
+    team: 'Avengers',
+    weapons: 'Nano-tech Suit',
+    language: 'English',
+  })
+
+  //WAR ZONE
+  //hero beating up archer
+  hero.ironFist(swordsman);
+  console.log(swordsman.healthPoints);
+  hero.ironFist(swordsman);
+  console.log(swordsman.healthPoints);
+  console.log(swordsman);
+
+
+  //villain beating up swordman
+  villain.thunderBolt(archer);
+  console.log(archer.healthPoints); // 8
+  villain.thunderBolt(archer);
+  console.log(archer.healthPoints); // 6
+  villain.thunderBolt(archer);
+  console.log(archer.healthPoints); // 4
+  villain.thunderBolt(archer);
+  console.log(archer.healthPoints); // 2
+  villain.thunderBolt(archer); 
+  console.log(archer)// 0
+
+  
+  //hero using his finishing move on villain
+  hero.finishingMove(villain);
+  console.log(villain);
